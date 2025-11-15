@@ -12,8 +12,9 @@
 
 import React from "react";
 import { View, Text, ImageBackground, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useWeatherContext } from "../../context/WeatherContext";
-import { formatTime, getWeatherCategory } from "../../utils/weatherUtils";
+import { formatTime, getWeatherCategory, convertTemp, getTempSymbol } from "../../utils/weatherUtils";
 import { getBackgroundImage } from "../../config/backgroundConfig";
 import LoadingSpinner from "../LoadingSpinner";
 import HighLowDisplay from "../ui/HighLowDisplay";
@@ -88,6 +89,13 @@ const CurrentWeatherCard = ({
       style={[styles.container, style]}
       imageStyle={styles.backgroundImage}
       resizeMode="cover">
+      {/* Gradient Overlay for better text readability */}
+      <LinearGradient
+        colors={["rgba(0, 0, 0, 0.2)", "rgba(0, 0, 0, 0.1)", "transparent"]}
+        style={styles.gradientOverlay}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+      />
       <View style={styles.content}>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
@@ -109,12 +117,12 @@ const CurrentWeatherCard = ({
         <View style={styles.mainContent}>
           <View style={styles.tempSection}>
             <View style={styles.tempContainer}>
-              <TemperatureDisplay
-                temp={temp}
-                tempScale={tempScale}
-                size="5xl"
-                containerStyle={styles.tempDisplayContainer}
-              />
+              <View style={styles.tempDisplayContainer}>
+                <Text style={styles.heroTemp}>
+                  {Math.round(convertTemp(temp, tempScale))}
+                  <Text style={styles.heroTempSymbol}>{getTempSymbol(tempScale)}</Text>
+                </Text>
+              </View>
             </View>
 
             <View style={styles.detailsSection}>
@@ -128,13 +136,14 @@ const CurrentWeatherCard = ({
               <View style={styles.feelsLikeContainer}>
                 <Text style={styles.feelsLikeText}>
                   Feels like{" "}
-                  <TemperatureDisplay
-                    temp={feels_like}
-                    tempScale={tempScale}
-                    size="sm"
-                    inline={true}
-                  />
                 </Text>
+                <TemperatureDisplay
+                  temp={feels_like}
+                  tempScale={tempScale}
+                  size="sm"
+                  inline={true}
+                  style={styles.feelsLikeTemp}
+                />
               </View>
 
               <View style={styles.highLowContainer}>
@@ -166,8 +175,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     minHeight: 200,
-    borderWidth: 2,
-    borderColor: "rgba(255, 255, 255, 0.3)",
+    borderWidth: 0,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
@@ -178,6 +186,14 @@ const styles = StyleSheet.create({
   backgroundImage: {
     borderRadius: 14,
   },
+  gradientOverlay: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    borderRadius: 14,
+  },
   loadingContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -186,9 +202,11 @@ const styles = StyleSheet.create({
     marginTop: 12,
     color: "#fff",
     fontSize: 16,
+    fontWeight: "500",
   },
   content: {
     flex: 1,
+    zIndex: 1,
   },
   header: {
     flexDirection: "row",
@@ -200,29 +218,46 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cityNameContainer: {
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 10,
     marginBottom: 8,
     alignSelf: "flex-start",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.4,
+    shadowRadius: 4,
+    elevation: 3,
   },
   cityName: {
-    fontSize: 24,
-    fontWeight: "600",
+    fontSize: 26,
+    fontWeight: "700",
     color: "#fff",
+    textShadowColor: "rgba(0, 0, 0, 0.5)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   timeContainer: {
-    backgroundColor: "rgba(0, 0, 0, 0.15)",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    backgroundColor: "rgba(0, 0, 0, 0.45)",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
     borderRadius: 8,
     alignSelf: "flex-start",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 2,
   },
   timeText: {
     fontSize: 14,
     color: "#fff",
-    opacity: 0.85,
+    fontWeight: "500",
+    opacity: 0.95,
+    textShadowColor: "rgba(0, 0, 0, 0.3)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
   mainContent: {
     flexDirection: "row",
@@ -233,33 +268,66 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   tempContainer: {
-    marginBottom: 12,
+    marginBottom: 16,
   },
   tempDisplayContainer: {
-    backgroundColor: "rgba(0, 0, 0, 0.15)",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 12,
     alignSelf: "flex-start",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+    elevation: 4,
+  },
+  heroTemp: {
+    fontSize: 80,
+    fontWeight: "300",
+    color: "#fff",
+    lineHeight: 96,
+    textShadowColor: "rgba(0, 0, 0, 0.6)",
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 6,
+  },
+  heroTempSymbol: {
+    fontSize: 48,
+    fontWeight: "300",
   },
   detailsSection: {
-    marginTop: 8,
+    marginTop: 12,
   },
   description: {
-    marginBottom: 8,
+    marginBottom: 10,
   },
   feelsLikeContainer: {
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    flexDirection: "row",
+    alignItems: "baseline",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     borderRadius: 8,
     marginBottom: 12,
     alignSelf: "flex-start",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 2,
   },
   feelsLikeText: {
-    fontSize: 14,
+    fontSize: 15,
     color: "#fff",
-    opacity: 0.85,
+    fontWeight: "500",
+    opacity: 0.95,
+    textShadowColor: "rgba(0, 0, 0, 0.3)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+    marginRight: 4,
+  },
+  feelsLikeTemp: {
+    marginLeft: 0,
   },
   highLowContainer: {
     marginTop: 8,

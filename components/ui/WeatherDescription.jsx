@@ -43,15 +43,24 @@ const WeatherDescription = ({
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 16,
+    fontSize: 17,
     color: "#fff",
-    opacity: 0.95,
+    fontWeight: "600",
+    opacity: 1,
+    textShadowColor: "rgba(0, 0, 0, 0.5)",
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
   backdrop: {
-    backgroundColor: "rgba(0, 0, 0, 0.15)",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
+    backgroundColor: "rgba(0, 0, 0, 0.45)",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 2,
   },
 });
 

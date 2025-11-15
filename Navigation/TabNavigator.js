@@ -14,7 +14,7 @@ export default function TabNavigator() {
         headerShown: false,
         tabBarIcon: ({ color, size }) => {
           let iconName;
-          if (route.name === "Current Weather") iconName = "location-outline";
+          if (route.name === "Current Location") iconName = "location-outline";
           else if (route.name === "Weather") iconName = "partly-sunny-outline";
           else if (route.name === "Favorites") iconName = "heart-outline";
           else if (route.name === "About") iconName = "information-circle-outline";
@@ -30,7 +30,7 @@ export default function TabNavigator() {
         },
       })}
     >
-      <Tab.Screen name="Current Weather" component={CurrentWeatherScreen} />
+      <Tab.Screen name="Current Location" component={CurrentWeatherScreen} />
       <Tab.Screen name="Weather" component={WeatherScreen} />
       <Tab.Screen name="Favorites" component={FavoritesScreen} />
       <Tab.Screen name="About" component={AboutScreen} />

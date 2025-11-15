@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   badge: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.15)",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 20,
@@ -73,12 +73,14 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 12,
     color: "#fff",
-    opacity: 0.75,
+    opacity: 0.9,
+    fontWeight: "500",
+    marginRight: 4,
   },
   temp: {
     fontSize: 14,
     color: "#fff",
-    fontWeight: "500",
+    fontWeight: "600",
   },
 });
 

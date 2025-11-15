@@ -21,10 +21,11 @@ const SectionTitle = ({ title, style }) => {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#1a1a1a",
     marginBottom: 16,
+    letterSpacing: 0.3,
   },
 });
 
