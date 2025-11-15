@@ -9,8 +9,9 @@
 // ============================================================================
 
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, ImageBackground, StyleSheet } from "react-native";
 import { formatTime, getWeatherCategory } from "../../utils/weatherUtils";
+import { getBackgroundImage } from "../../config/backgroundConfig";
 import WeatherIcon from "../ui/WeatherIcon";
 import TemperatureDisplay from "../ui/TemperatureDisplay";
 
@@ -25,10 +26,14 @@ const HourlyForecastCard = ({ weatherData, tempScale, showTime = true }) => {
 
   const weatherInfo = weatherData.weather?.[0];
   const weatherCategory = getWeatherCategory(weatherInfo?.icon);
-  const backgroundColor = weatherCategory ? "#4682B4" : "#708090";
+  const backgroundImage = getBackgroundImage(weatherCategory);
 
   return (
-    <View style={[styles.container, { backgroundColor }]}>
+    <ImageBackground
+      source={backgroundImage}
+      style={styles.container}
+      imageStyle={styles.backgroundImage}
+      resizeMode="cover">
       {showTime && (
         <Text style={styles.time}>
           {new Date(weatherData.dt * 1000).toLocaleTimeString("en-US", {
@@ -49,7 +54,7 @@ const HourlyForecastCard = ({ weatherData, tempScale, showTime = true }) => {
         size="lg"
         style={styles.temp}
       />
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -61,6 +66,10 @@ const styles = StyleSheet.create({
     minWidth: 100,
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.2)",
+    overflow: "hidden",
+  },
+  backgroundImage: {
+    borderRadius: 11,
   },
   time: {
     fontSize: 12,

@@ -9,8 +9,9 @@
 // ============================================================================
 
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from "react-native";
 import { formatDate, getDayName, getWeatherCategory } from "../../utils/weatherUtils";
+import { getBackgroundImage } from "../../config/backgroundConfig";
 import WeatherIcon from "../ui/WeatherIcon";
 import TemperatureDisplay from "../ui/TemperatureDisplay";
 import WeatherDescription from "../ui/WeatherDescription";
@@ -37,7 +38,7 @@ const ForecastCard = ({
 
   const weatherInfo = weatherData.weather?.[0];
   const weatherCategory = getWeatherCategory(weatherInfo?.icon);
-  const backgroundColor = weatherCategory ? "#4682B4" : "#708090";
+  const backgroundImage = getBackgroundImage(weatherCategory);
 
   const tempMax = weatherData.main?.temp_max || weatherData.main?.temp;
   const tempMin = weatherData.main?.temp_min || weatherData.main?.temp;
@@ -56,7 +57,11 @@ const ForecastCard = ({
   };
 
   const CardContent = (
-    <View style={[styles.container, { backgroundColor }]}>
+    <ImageBackground
+      source={backgroundImage}
+      style={styles.container}
+      imageStyle={styles.backgroundImage}
+      resizeMode="cover">
       <View style={styles.header}>
         <Text style={styles.dateText}>
           {cityName || getDateDisplay()}
@@ -100,7 +105,7 @@ const ForecastCard = ({
         capitalize={true}
         showBackdrop={true}
       />
-    </View>
+    </ImageBackground>
   );
 
   if (onClick) {
@@ -126,6 +131,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,
+    overflow: "hidden",
+  },
+  backgroundImage: {
+    borderRadius: 10,
   },
   header: {
     flexDirection: "row",

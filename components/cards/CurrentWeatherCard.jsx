@@ -14,35 +14,13 @@ import React from "react";
 import { View, Text, ImageBackground, StyleSheet } from "react-native";
 import { useWeatherContext } from "../../context/WeatherContext";
 import { formatTime, getWeatherCategory } from "../../utils/weatherUtils";
+import { getBackgroundImage } from "../../config/backgroundConfig";
 import LoadingSpinner from "../LoadingSpinner";
 import HighLowDisplay from "../ui/HighLowDisplay";
 import TemperatureDisplay from "../ui/TemperatureDisplay";
 import WeatherDescription from "../ui/WeatherDescription";
 import WeatherIcon from "../ui/WeatherIcon";
 import FavoriteToggle from "../ui/FavoriteToggle";
-
-// ============================================================================
-// Background Images (simplified - using solid colors for now)
-// ============================================================================
-
-const getBackgroundColor = (category) => {
-  const colors = {
-    "clear-day": "#87CEEB",
-    "clear-night": "#191970",
-    "clouds-day": "#B0C4DE",
-    "clouds-night": "#2F4F4F",
-    overcast: "#708090",
-    "rain-day": "#4682B4",
-    "rain-night": "#1C1C1C",
-    "drizzle-day": "#5F9EA0",
-    "drizzle-night": "#2F4F4F",
-    thunderstorm: "#2F2F2F",
-    "snow-day": "#E0E0E0",
-    "snow-night": "#696969",
-    "fog-mist": "#C0C0C0",
-  };
-  return colors[category] || "#708090";
-};
 
 // ============================================================================
 // Component Definition
@@ -63,11 +41,16 @@ const CurrentWeatherCard = ({ style, hideFavorite = false }) => {
   // ============================================================================
 
   if (isLoading || !currentWeather || !selectedCity) {
+    const defaultBackground = getBackgroundImage(null);
     return (
-      <View style={[styles.container, styles.loadingContainer, style]}>
+      <ImageBackground
+        source={defaultBackground}
+        style={[styles.container, styles.loadingContainer, style]}
+        imageStyle={styles.backgroundImage}
+        resizeMode="cover">
         <LoadingSpinner size="large" color="#fff" />
         <Text style={styles.loadingText}>Loading current weather...</Text>
-      </View>
+      </ImageBackground>
     );
   }
 
@@ -82,14 +65,18 @@ const CurrentWeatherCard = ({ style, hideFavorite = false }) => {
   } = currentWeather;
 
   const weatherCategory = getWeatherCategory(weatherInfo?.icon);
-  const backgroundColor = getBackgroundColor(weatherCategory);
+  const backgroundImage = getBackgroundImage(weatherCategory);
 
   // ============================================================================
   // Component Render
   // ============================================================================
 
   return (
-    <View style={[styles.container, { backgroundColor }, style]}>
+    <ImageBackground
+      source={backgroundImage}
+      style={[styles.container, style]}
+      imageStyle={styles.backgroundImage}
+      resizeMode="cover">
       <View style={styles.content}>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
@@ -159,7 +146,7 @@ const CurrentWeatherCard = ({ style, hideFavorite = false }) => {
           </View>
         </View>
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -175,6 +162,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 5,
+    overflow: "hidden",
+  },
+  backgroundImage: {
+    borderRadius: 14,
   },
   loadingContainer: {
     justifyContent: "center",
