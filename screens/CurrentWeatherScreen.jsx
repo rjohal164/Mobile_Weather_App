@@ -151,41 +151,53 @@ export default function CurrentWeatherScreen() {
   // Loading state - location or weather
   if (locationLoading || weatherLoading) {
     return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Current Location</Text>
-          <Ionicons name="location" size={24} color="#007AFF" />
+      <LinearGradient
+        colors={["#ccfbf1", "#d1fae5", "#dbeafe", "#e0f2fe"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.gradientBackground}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.title}>Current Location</Text>
+            <Ionicons name="location" size={24} color="#007AFF" />
+          </View>
+          <View style={styles.loadingContainer}>
+            <LoadingSpinner size="large" color="#007AFF" />
+            <Text style={styles.loadingText}>
+              {locationLoading ? "Getting your location..." : "Loading weather..."}
+            </Text>
+          </View>
         </View>
-        <View style={styles.loadingContainer}>
-          <LoadingSpinner size="large" color="#007AFF" />
-          <Text style={styles.loadingText}>
-            {locationLoading ? "Getting your location..." : "Loading weather..."}
-          </Text>
-        </View>
-      </View>
+      </LinearGradient>
     );
   }
 
   // Error state
   if (locationError || weatherError) {
     return (
-      <ScrollView style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Current Location</Text>
-          <Ionicons name="location" size={24} color="#007AFF" />
-        </View>
-        <View style={styles.errorContainer}>
-          <Ionicons name="alert-circle" size={48} color="#ff6b6b" />
-          <Text style={styles.errorTitle}>Unable to Get Location</Text>
-          <Text style={styles.errorText}>
-            {locationError || weatherError}
-          </Text>
-          <TouchableOpacity style={styles.retryButton} onPress={handleRefresh}>
-            <Ionicons name="refresh" size={20} color="#fff" style={{ marginRight: 8 }} />
-            <Text style={styles.retryButtonText}>Try Again</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+      <LinearGradient
+        colors={["#ccfbf1", "#d1fae5", "#dbeafe", "#e0f2fe"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.gradientBackground}>
+        <ScrollView style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.title}>Current Location</Text>
+            <Ionicons name="location" size={24} color="#007AFF" />
+          </View>
+          <View style={styles.errorContainer}>
+            <Ionicons name="alert-circle" size={48} color="#ff6b6b" />
+            <Text style={styles.errorTitle}>Unable to Get Location</Text>
+            <Text style={styles.errorText}>
+              {locationError || weatherError}
+            </Text>
+            <TouchableOpacity style={styles.retryButton} onPress={handleRefresh}>
+              <Ionicons name="refresh" size={20} color="#fff" style={{ marginRight: 8 }} />
+              <Text style={styles.retryButtonText}>Try Again</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </LinearGradient>
     );
   }
 
@@ -194,11 +206,16 @@ export default function CurrentWeatherScreen() {
   const windData = currentLocationWeather?.wind;
 
   return (
-    <ScrollView 
-      style={styles.container}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
-      }>
+    <LinearGradient
+      colors={["#ccfbf1", "#d1fae5", "#dbeafe", "#e0f2fe"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.gradientBackground}>
+      <ScrollView 
+        style={styles.container}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }>
       <View style={styles.header}>
         <View style={styles.headerLeft}>
           <Text style={styles.title}>Current Location</Text>
@@ -301,14 +318,17 @@ export default function CurrentWeatherScreen() {
           />
         </View>
       )}
-    </ScrollView>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  gradientBackground: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: "#f0f4f8",
   },
   header: {
     flexDirection: "row",

@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useWeatherContext } from "../context/WeatherContext";
 import SearchBar from "../components/search/SearchBar";
 import CurrentWeatherCard from "../components/cards/CurrentWeatherCard";
@@ -24,28 +25,36 @@ export default function WeatherScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.contentContainer}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Weather</Text>
-          <TemperatureScaleToggle />
-        </View>
-        <SearchBar />
-        <View style={styles.cardContainer}>
-          <CurrentWeatherCard />
-        </View>
-        {renderView()}
-      </ScrollView>
-    </View>
+    <LinearGradient
+      colors={["#dbeafe", "#e0f2fe", "#e0e7ff", "#ede9fe"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.gradientBackground}>
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.contentContainer}>
+          <View style={styles.header}>
+            <Text style={styles.title}>Weather</Text>
+            <TemperatureScaleToggle />
+          </View>
+          <SearchBar />
+          <View style={styles.cardContainer}>
+            <CurrentWeatherCard />
+          </View>
+          {renderView()}
+        </ScrollView>
+      </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  gradientBackground: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: "#f9f9f9",
   },
   scrollView: {
     flex: 1,

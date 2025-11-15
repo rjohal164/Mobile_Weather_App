@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -18,7 +19,11 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={["#e0f2fe", "#f0f9ff", "#faf5ff", "#fef3f2"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.container}>
       <View style={styles.content}>
         <Ionicons name="partly-sunny" size={80} color="#007AFF" />
         <Text style={styles.title}>Welcome to Weather App</Text>
@@ -34,7 +39,7 @@ export default function WelcomeScreen() {
           <Ionicons name="arrow-forward" size={20} color="#fff" style={styles.buttonIcon} />
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
@@ -44,7 +49,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    backgroundColor: "#f9f9f9",
   },
   content: {
     alignItems: "center",

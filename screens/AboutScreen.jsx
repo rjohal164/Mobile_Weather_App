@@ -1,9 +1,15 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function AboutScreen() {
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    <LinearGradient
+      colors={["#f3e8ff", "#ede9fe", "#e0e7ff", "#e0f2fe"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.gradientBackground}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
       <View style={styles.header}>
         <Ionicons name="information-circle" size={60} color="#007AFF" />
         <Text style={styles.title}>About Weather App</Text>
@@ -43,14 +49,17 @@ export default function AboutScreen() {
           Built with React Native, Expo, and OpenWeatherMap API.
         </Text>
       </View>
-    </ScrollView>
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
+  gradientBackground: {
+    flex: 1,
+  },
   container: {
     flex: 1,
-    backgroundColor: "#f9f9f9",
   },
   contentContainer: {
     padding: 20,
