@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "name": "Buddy",
+    "type": "Dog",
+    "age": 3,
+    "note": "Loves playing fetch and hates loud noises"
+  },
+  {
+    "id": "2",
+    "name": "Mittens",
+    "type": "Cat",
+    "age": 2,
+    "note": "Sleeps 18 hours a day, loves tuna treats"
+  },
+  {
+    "id": "3",
+    "name": "Charlie",
+    "type": "Rabbit",
+    "age": 1,
+    "note": "Eats a lot of carrots and chews wires"
+  },
+  {
+    "id": "4",
+    "name": "Goldie",
+    "type": "Fish",
+    "age": 1,
+    "note": "Very calm and enjoys bubbles"
+  },
+  {
+    "id": "5",
+    "name": "Luna",
+    "type": "Dog",
+    "age": 4,
+    "note": "Very friendly, barks at strangers"
+  }
+]
