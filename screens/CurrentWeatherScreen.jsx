@@ -9,9 +9,11 @@ import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function CurrentWeatherScreen() {
   const { location, loading: locationLoading, error: locationError, requestLocation } = useGeolocation();
-  const { selectCity, fetchForecast } = useWeatherContext();
+  const { tempScale } = useWeatherContext();
   const [weatherLoading, setWeatherLoading] = useState(false);
   const [weatherError, setWeatherError] = useState(null);
+  const [currentLocationWeather, setCurrentLocationWeather] = useState(null);
+  const [currentLocationCity, setCurrentLocationCity] = useState(null);
 
   // Request location on mount
   useEffect(() => {
@@ -40,11 +42,9 @@ export default function CurrentWeatherScreen() {
           state: weatherData.sys?.country || "",
         };
 
-        // Update selected city in context
-        selectCity(cityData);
-
-        // Fetch forecast
-        await fetchForecast();
+        // Store in local state (don't update shared context)
+        setCurrentLocationWeather(weatherData);
+        setCurrentLocationCity(cityData);
       } catch (err) {
         setWeatherError(`Failed to fetch weather: ${err.message}`);
         console.error("Weather fetch error:", err);
@@ -116,7 +116,10 @@ export default function CurrentWeatherScreen() {
       </View>
       
       <View style={styles.cardContainer}>
-        <CurrentWeatherCard />
+        <CurrentWeatherCard 
+          weatherData={currentLocationWeather}
+          cityData={currentLocationCity}
+        />
       </View>
     </ScrollView>
   );

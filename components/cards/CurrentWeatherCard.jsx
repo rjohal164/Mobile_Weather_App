@@ -26,15 +26,26 @@ import FavoriteToggle from "../ui/FavoriteToggle";
 // Component Definition
 // ============================================================================
 
-const CurrentWeatherCard = ({ style, hideFavorite = false }) => {
+const CurrentWeatherCard = ({ 
+  style, 
+  hideFavorite = false,
+  weatherData: propWeatherData,
+  cityData: propCityData,
+}) => {
   const {
-    selectedCity,
-    currentWeather,
+    selectedCity: contextSelectedCity,
+    currentWeather: contextCurrentWeather,
     tempScale,
-    isLoading,
+    isLoading: contextIsLoading,
     toggleFavorite,
     isCityFavorite,
   } = useWeatherContext();
+
+  // Use props if provided, otherwise fall back to context (for backward compatibility)
+  const selectedCity = propCityData !== undefined ? propCityData : contextSelectedCity;
+  const currentWeather = propWeatherData !== undefined ? propWeatherData : contextCurrentWeather;
+  // Only use context loading state if props are not provided
+  const isLoading = propWeatherData === undefined && propCityData === undefined ? contextIsLoading : false;
 
   // ============================================================================
   // Loading State
