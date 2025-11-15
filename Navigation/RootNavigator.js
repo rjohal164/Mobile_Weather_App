@@ -1,6 +1,19 @@
-import TabNavigator from "./TabNavigator";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import WelcomeStack from "./WelcomeStack";
+import AppStack from "./AppStack";
+
+const Stack = createNativeStackNavigator();
 
 export default function RootNavigator() {
-  // Directly render TabNavigator for public weather app
-  return <TabNavigator />;
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+      initialRouteName="WelcomeStack"
+    >
+      <Stack.Screen name="WelcomeStack" component={WelcomeStack} />
+      <Stack.Screen name="AppStack" component={AppStack} />
+    </Stack.Navigator>
+  );
 }
