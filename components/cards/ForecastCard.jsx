@@ -8,8 +8,8 @@
 // Imports
 // ============================================================================
 
-import React from "react";
-import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from "react-native";
+import React, { useRef } from "react";
+import { View, Text, TouchableOpacity, ImageBackground, StyleSheet, Animated, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { formatDate, getDayName, getWeatherCategory } from "../../utils/weatherUtils";
 import { getBackgroundImage } from "../../config/backgroundConfig";
@@ -55,6 +55,32 @@ const ForecastCard = ({
       return getDayName(weatherData.dt, showExtended ? "long" : "short");
     }
     return "Today";
+  };
+
+  // ============================================================================
+  // Hover Animation
+  // ============================================================================
+
+  const translateY = useRef(new Animated.Value(0)).current;
+
+  const handlePressIn = () => {
+    Animated.timing(translateY, {
+      toValue: -4,
+      duration: 150,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.timing(translateY, {
+      toValue: 0,
+      duration: 150,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const animatedStyle = {
+    transform: [{ translateY }],
   };
 
   const CardContent = (
@@ -127,13 +153,25 @@ const ForecastCard = ({
 
   if (onClick) {
     return (
-      <TouchableOpacity onPress={() => onClick(weatherData, cityName)} activeOpacity={0.7}>
-        {CardContent}
+      <TouchableOpacity 
+        onPress={() => onClick(weatherData, cityName)} 
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        activeOpacity={0.7}>
+        <Animated.View style={animatedStyle}>
+          {CardContent}
+        </Animated.View>
       </TouchableOpacity>
     );
   }
 
-  return CardContent;
+  return (
+    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut}>
+      <Animated.View style={animatedStyle}>
+        {CardContent}
+      </Animated.View>
+    </Pressable>
+  );
 };
 
 const styles = StyleSheet.create({

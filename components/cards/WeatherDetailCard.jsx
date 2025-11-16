@@ -9,8 +9,8 @@
 // Imports
 // ============================================================================
 
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useRef } from "react";
+import { View, Text, StyleSheet, Animated, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -26,6 +26,24 @@ const WeatherDetailCard = ({
   color = "#fff",
   gradientColors = null 
 }) => {
+  const translateY = useRef(new Animated.Value(0)).current;
+
+  const handlePressIn = () => {
+    Animated.timing(translateY, {
+      toValue: -4,
+      duration: 150,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.timing(translateY, {
+      toValue: 0,
+      duration: 150,
+      useNativeDriver: true,
+    }).start();
+  };
+
   const CardContent = (
     <>
       <View style={styles.iconContainer}>
@@ -39,23 +57,33 @@ const WeatherDetailCard = ({
     </>
   );
 
+  const animatedStyle = {
+    transform: [{ translateY }],
+  };
+
   // Use gradient if provided, otherwise use solid background
   if (gradientColors) {
     return (
-      <LinearGradient
-        colors={gradientColors}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.container}>
-        {CardContent}
-      </LinearGradient>
+      <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut}>
+        <Animated.View style={animatedStyle}>
+          <LinearGradient
+            colors={gradientColors}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.container}>
+            {CardContent}
+          </LinearGradient>
+        </Animated.View>
+      </Pressable>
     );
   }
 
   return (
-    <View style={styles.container}>
-      {CardContent}
-    </View>
+    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut}>
+      <Animated.View style={[styles.container, animatedStyle]}>
+        {CardContent}
+      </Animated.View>
+    </Pressable>
   );
 };
 

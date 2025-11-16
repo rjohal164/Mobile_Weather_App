@@ -10,8 +10,8 @@
 // Imports
 // ============================================================================
 
-import React from "react";
-import { View, Text, ImageBackground, StyleSheet } from "react-native";
+import React, { useRef } from "react";
+import { View, Text, ImageBackground, StyleSheet, Animated, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useWeatherContext } from "../../context/WeatherContext";
 import { formatTime, getWeatherCategory, convertTemp, getTempSymbol } from "../../utils/weatherUtils";
@@ -80,15 +80,43 @@ const CurrentWeatherCard = ({
   const backgroundImage = getBackgroundImage(weatherCategory);
 
   // ============================================================================
+  // Hover Animation
+  // ============================================================================
+
+  const translateY = useRef(new Animated.Value(0)).current;
+
+  const handlePressIn = () => {
+    Animated.timing(translateY, {
+      toValue: -4,
+      duration: 150,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.timing(translateY, {
+      toValue: 0,
+      duration: 150,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const animatedStyle = {
+    transform: [{ translateY }],
+  };
+
+  // ============================================================================
   // Component Render
   // ============================================================================
 
   return (
-    <ImageBackground
-      source={backgroundImage}
-      style={[styles.container, style]}
-      imageStyle={styles.backgroundImage}
-      resizeMode="cover">
+    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut}>
+      <Animated.View style={animatedStyle}>
+        <ImageBackground
+          source={backgroundImage}
+          style={[styles.container, style]}
+          imageStyle={styles.backgroundImage}
+          resizeMode="cover">
       {/* Gradient Overlay for better text readability */}
       <LinearGradient
         colors={["rgba(0, 0, 0, 0.2)", "rgba(0, 0, 0, 0.1)", "transparent"]}
@@ -186,6 +214,8 @@ const CurrentWeatherCard = ({
         </View>
       </View>
     </ImageBackground>
+    </Animated.View>
+    </Pressable>
   );
 };
 

@@ -8,8 +8,8 @@
 // Imports
 // ============================================================================
 
-import React from "react";
-import { View, Text, ImageBackground, StyleSheet } from "react-native";
+import React, { useRef } from "react";
+import { View, Text, ImageBackground, StyleSheet, Animated, Pressable } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { formatTime, getWeatherCategory } from "../../utils/weatherUtils";
 import { getBackgroundImage } from "../../config/backgroundConfig";
@@ -21,6 +21,8 @@ import TemperatureDisplay from "../ui/TemperatureDisplay";
 // ============================================================================
 
 const HourlyForecastCard = ({ weatherData, tempScale, showTime = true }) => {
+  const translateY = useRef(new Animated.Value(0)).current;
+
   if (!weatherData) {
     return null;
   }
@@ -29,12 +31,34 @@ const HourlyForecastCard = ({ weatherData, tempScale, showTime = true }) => {
   const weatherCategory = getWeatherCategory(weatherInfo?.icon);
   const backgroundImage = getBackgroundImage(weatherCategory);
 
+  const handlePressIn = () => {
+    Animated.timing(translateY, {
+      toValue: -4,
+      duration: 150,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.timing(translateY, {
+      toValue: 0,
+      duration: 150,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const animatedStyle = {
+    transform: [{ translateY }],
+  };
+
   return (
-    <ImageBackground
-      source={backgroundImage}
-      style={styles.container}
-      imageStyle={styles.backgroundImage}
-      resizeMode="cover">
+    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut}>
+      <Animated.View style={animatedStyle}>
+        <ImageBackground
+          source={backgroundImage}
+          style={styles.container}
+          imageStyle={styles.backgroundImage}
+          resizeMode="cover">
       {showTime && (
         <LinearGradient
           colors={["rgba(135, 135, 135, 0.6)", "rgba(135, 135, 135, 0.6)", "rgba(135, 135, 135, 0.6)"]}
@@ -68,6 +92,8 @@ const HourlyForecastCard = ({ weatherData, tempScale, showTime = true }) => {
         />
       </LinearGradient>
     </ImageBackground>
+    </Animated.View>
+    </Pressable>
   );
 };
 
