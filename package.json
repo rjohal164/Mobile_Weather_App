@@ -33,5 +33,6 @@
     "babel-preset-expo": "^54.0.7",
     "dotenv": "^17.2.3"
   },
+  "license": "SEE LICENSE IN LICENSE",
   "private": true
 }
