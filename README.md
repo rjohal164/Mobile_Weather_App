@@ -93,7 +93,7 @@ Follow these steps to set up the project locally:
 1. **Clone or download the repository**
    ```bash
    git clone https://github.com/rjohal164/Mobile_Weather_App.git
-   cd "Mobile App"
+   
    ```
 
 2. **Install dependencies**
