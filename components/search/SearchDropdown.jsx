@@ -17,12 +17,21 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
+import * as Haptics from "expo-haptics";
 
 // ============================================================================
 // Component Definition
 // ============================================================================
 
 const SearchDropdown = ({ results, onSelect, isLoading }) => {
+  const handleCitySelect = (item) => {
+    try {
+      Haptics.selectionAsync();
+    } catch (error) {
+      // Haptics not available, continue without feedback
+    }
+    onSelect(item);
+  };
 
   if (isLoading) {
     return (
@@ -52,7 +61,7 @@ const SearchDropdown = ({ results, onSelect, isLoading }) => {
           <TouchableOpacity
             key={`${item.lat}-${item.lon}-${index}`}
             style={styles.item}
-            onPress={() => onSelect(item)}
+            onPress={() => handleCitySelect(item)}
             activeOpacity={0.7}>
             <Text style={styles.itemText}>{locationString}</Text>
           </TouchableOpacity>

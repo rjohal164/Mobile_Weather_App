@@ -408,7 +408,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     paddingTop: 8,
     paddingBottom: 8,
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
+    backgroundColor: "transparent",
     borderRadius: 12,
     marginHorizontal: 4,
   },

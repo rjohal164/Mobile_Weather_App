@@ -10,6 +10,7 @@
 
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { convertTemp, getTempSymbol } from "../../utils/weatherUtils";
 
 // ============================================================================
@@ -22,6 +23,7 @@ const HighLowDisplay = ({
   tempScale,
   style,
   layout = "horizontal",
+  gradientColors = ["rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)"],
 }) => {
   if (tempHigh === undefined || tempLow === undefined) {
     return null;
@@ -33,20 +35,28 @@ const HighLowDisplay = ({
         layout === "vertical" ? styles.verticalContainer : styles.horizontalContainer,
         style,
       ]}>
-      <View style={[styles.badge, layout === "vertical" && { marginBottom: 4 }]}>
+      <LinearGradient
+        colors={gradientColors}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={[styles.badge, layout === "vertical" && { marginBottom: 4 }]}>
         <Text style={styles.label}>High</Text>
         <Text style={styles.temp}>
           {convertTemp(tempHigh, tempScale)}
           {getTempSymbol(tempScale)}
         </Text>
-      </View>
-      <View style={styles.badge}>
+      </LinearGradient>
+      <LinearGradient
+        colors={gradientColors}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.badge}>
         <Text style={styles.label}>Low</Text>
         <Text style={styles.temp}>
           {convertTemp(tempLow, tempScale)}
           {getTempSymbol(tempScale)}
         </Text>
-      </View>
+      </LinearGradient>
     </View>
   );
 };
@@ -63,10 +73,9 @@ const styles = StyleSheet.create({
   badge: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     paddingVertical: 6,
-    borderRadius: 20,
+    borderRadius: 10,
     marginRight: 8,
     marginBottom: 4,
   },

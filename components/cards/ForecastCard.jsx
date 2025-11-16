@@ -10,6 +10,7 @@
 
 import React from "react";
 import { View, Text, TouchableOpacity, ImageBackground, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { formatDate, getDayName, getWeatherCategory } from "../../utils/weatherUtils";
 import { getBackgroundImage } from "../../config/backgroundConfig";
 import WeatherIcon from "../ui/WeatherIcon";
@@ -63,14 +64,22 @@ const ForecastCard = ({
       imageStyle={styles.backgroundImage}
       resizeMode="cover">
       <View style={styles.header}>
-        <Text style={styles.dateText}>
-          {cityName || getDateDisplay()}
-        </Text>
+        <LinearGradient
+          colors={["rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.dateText}>
+          <Text style={styles.dateTextContent}>
+            {cityName || getDateDisplay()}
+          </Text>
+        </LinearGradient>
         {showFavorite && (
-          <FavoriteToggle
-            isFavorited={isFavorited}
-            onToggle={onFavoriteClick}
-          />
+          <View style={styles.favoriteContainer}>
+            <FavoriteToggle
+              isFavorited={isFavorited}
+              onToggle={onFavoriteClick}
+            />
+          </View>
         )}
       </View>
 
@@ -83,27 +92,35 @@ const ForecastCard = ({
         />
       </View>
 
-      <View style={styles.tempContainer}>
+      <LinearGradient
+        colors={["rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.tempContainer}>
         <View style={styles.tempRow}>
           <TemperatureDisplay
             temp={tempMax}
             tempScale={tempScale}
-            size="md"
+            size="sm"
+            fontWeight="700"
           />
           <Text style={[styles.tempSeparator, { marginHorizontal: 4 }]}>/</Text>
           <TemperatureDisplay
             temp={tempMin}
             tempScale={tempScale}
-            size="md"
+            size="sm"
+            fontWeight="700"
           />
         </View>
-      </View>
+      </LinearGradient>
 
       <WeatherDescription
         description={weatherInfo?.description}
         style={styles.description}
         capitalize={true}
         showBackdrop={true}
+        gradientColors={["rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)"]}
+        fontSize={14}
       />
     </ImageBackground>
   );
@@ -124,8 +141,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     minHeight: 160,
-    borderWidth: 2,
-    borderColor: "rgba(255, 255, 255, 0.3)",
+    borderWidth: 0,
+    borderColor: "transparent",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -134,46 +151,53 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   backgroundImage: {
-    borderRadius: 10,
+    borderRadius: 12,
   },
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
     marginBottom: 12,
+    position: "relative",
+  },
+  favoriteContainer: {
+    position: "absolute",
+    right: 0,
   },
   dateText: {
-    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 10,
+    alignSelf: "center",
+  },
+  dateTextContent: {
+    fontSize: 24,
     fontWeight: "600",
     color: "#fff",
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
-    alignSelf: "flex-start",
+    textAlign: "center",
   },
   iconContainer: {
     alignItems: "center",
     marginVertical: 12,
   },
   icon: {
-    width: 64,
-    height: 64,
+    width: 80,
+    height: 80,
   },
   tempContainer: {
     alignItems: "center",
     marginVertical: 12,
-    backgroundColor: "rgba(0, 0, 0, 0.15)",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 10,
+    alignSelf: "center",
   },
   tempRow: {
     flexDirection: "row",
     alignItems: "baseline",
   },
   tempSeparator: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#fff",
     opacity: 0.75,
   },

@@ -11,6 +11,7 @@
 import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { useWeatherContext } from "../../context/WeatherContext";
+import * as Haptics from "expo-haptics";
 
 // ============================================================================
 // Component Definition
@@ -19,6 +20,15 @@ import { useWeatherContext } from "../../context/WeatherContext";
 const ViewControls = () => {
   const { forecastView, changeForecastView } = useWeatherContext();
 
+  const handleViewChange = (view) => {
+    try {
+      Haptics.selectionAsync();
+    } catch (error) {
+      // Haptics not available, continue without feedback
+    }
+    changeForecastView(view);
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -26,7 +36,7 @@ const ViewControls = () => {
           styles.button,
           forecastView === "current" && styles.activeButton,
         ]}
-        onPress={() => changeForecastView("current")}>
+        onPress={() => handleViewChange("current")}>
         <Text
           style={[
             styles.buttonText,
@@ -41,7 +51,7 @@ const ViewControls = () => {
           styles.buttonMargin,
           forecastView === "threeDay" && styles.activeButton,
         ]}
-        onPress={() => changeForecastView("threeDay")}>
+        onPress={() => handleViewChange("threeDay")}>
         <Text
           style={[
             styles.buttonText,
@@ -56,7 +66,7 @@ const ViewControls = () => {
           styles.buttonMargin,
           forecastView === "fiveDay" && styles.activeButton,
         ]}
-        onPress={() => changeForecastView("fiveDay")}>
+        onPress={() => handleViewChange("fiveDay")}>
         <Text
           style={[
             styles.buttonText,

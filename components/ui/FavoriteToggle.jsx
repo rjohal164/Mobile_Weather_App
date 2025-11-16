@@ -12,15 +12,25 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 
 // ============================================================================
 // Component Definition
 // ============================================================================
 
 const FavoriteToggle = ({ isFavorited, onToggle, style }) => {
+  const handlePress = () => {
+    try {
+      Haptics.selectionAsync();
+    } catch (error) {
+      // Haptics not available, continue without feedback
+    }
+    onToggle();
+  };
+
   return (
     <TouchableOpacity
-      onPress={onToggle}
+      onPress={handlePress}
       style={[
         styles.button,
         isFavorited ? styles.favorited : styles.notFavorited,

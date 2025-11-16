@@ -11,6 +11,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useWeatherContext } from "../../context/WeatherContext";
+import * as Haptics from "expo-haptics";
 
 // ============================================================================
 // Component Definition
@@ -19,6 +20,24 @@ import { useWeatherContext } from "../../context/WeatherContext";
 const TemperatureScaleToggle = ({ style }) => {
   const { tempScale, changeTemperatureScale } = useWeatherContext();
 
+  const handleCelsiusPress = () => {
+    try {
+      Haptics.selectionAsync();
+    } catch (error) {
+      // Haptics not available, continue without feedback
+    }
+    changeTemperatureScale("celsius");
+  };
+
+  const handleFahrenheitPress = () => {
+    try {
+      Haptics.selectionAsync();
+    } catch (error) {
+      // Haptics not available, continue without feedback
+    }
+    changeTemperatureScale("fahrenheit");
+  };
+
   return (
     <View style={[styles.container, style]}>
       <TouchableOpacity
@@ -26,7 +45,7 @@ const TemperatureScaleToggle = ({ style }) => {
           styles.button,
           tempScale === "celsius" && styles.activeButton,
         ]}
-        onPress={() => changeTemperatureScale("celsius")}>
+        onPress={handleCelsiusPress}>
         <Text
           style={[
             styles.buttonText,
@@ -40,7 +59,7 @@ const TemperatureScaleToggle = ({ style }) => {
           styles.button,
           tempScale === "fahrenheit" && styles.activeButton,
         ]}
-        onPress={() => changeTemperatureScale("fahrenheit")}>
+        onPress={handleFahrenheitPress}>
         <Text
           style={[
             styles.buttonText,

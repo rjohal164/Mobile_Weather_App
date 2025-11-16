@@ -99,12 +99,20 @@ const CurrentWeatherCard = ({
       <View style={styles.content}>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <View style={styles.cityNameContainer}>
+            <LinearGradient
+              colors={["rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.cityNameContainer}>
               <Text style={styles.cityName}>{selectedCity.name}</Text>
-            </View>
-            <View style={styles.timeContainer}>
+            </LinearGradient>
+            <LinearGradient
+              colors={["rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.timeContainer}>
               <Text style={styles.timeText}>Time: {formatTime(dt)}</Text>
-            </View>
+            </LinearGradient>
           </View>
           {!hideFavorite && (
             <FavoriteToggle
@@ -117,12 +125,16 @@ const CurrentWeatherCard = ({
         <View style={styles.mainContent}>
           <View style={styles.tempSection}>
             <View style={styles.tempContainer}>
-              <View style={styles.tempDisplayContainer}>
+              <LinearGradient
+                colors={["rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.tempDisplayContainer}>
                 <Text style={styles.heroTemp}>
                   {Math.round(convertTemp(temp, tempScale))}
                   <Text style={styles.heroTempSymbol}>{getTempSymbol(tempScale)}</Text>
                 </Text>
-              </View>
+              </LinearGradient>
             </View>
 
             <View style={styles.detailsSection}>
@@ -131,9 +143,16 @@ const CurrentWeatherCard = ({
                 style={styles.description}
                 capitalize={true}
                 showBackdrop={true}
+                gradientColors={["rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)"]}
+                textAlign="left"
+                alignSelf="flex-start"
               />
 
-              <View style={styles.feelsLikeContainer}>
+              <LinearGradient
+                colors={["rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)", "rgba(135, 135, 135, 0.7)"]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.feelsLikeContainer}>
                 <Text style={styles.feelsLikeText}>
                   Feels like{" "}
                 </Text>
@@ -144,7 +163,7 @@ const CurrentWeatherCard = ({
                   inline={true}
                   style={styles.feelsLikeTemp}
                 />
-              </View>
+              </LinearGradient>
 
               <View style={styles.highLowContainer}>
                 <HighLowDisplay
@@ -176,15 +195,10 @@ const styles = StyleSheet.create({
     padding: 16,
     minHeight: 200,
     borderWidth: 0,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
     overflow: "hidden",
   },
   backgroundImage: {
-    borderRadius: 14,
+    borderRadius: 16,
   },
   gradientOverlay: {
     position: "absolute",
@@ -192,7 +206,7 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
     bottom: 0,
-    borderRadius: 14,
+    borderRadius: 16,
   },
   loadingContainer: {
     justifyContent: "center",
@@ -218,17 +232,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   cityNameContainer: {
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 10,
     marginBottom: 8,
     alignSelf: "flex-start",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.4,
-    shadowRadius: 4,
-    elevation: 3,
   },
   cityName: {
     fontSize: 26,
@@ -239,16 +247,10 @@ const styles = StyleSheet.create({
     textShadowRadius: 3,
   },
   timeContainer: {
-    backgroundColor: "rgba(0, 0, 0, 0.45)",
     paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 8,
+    paddingVertical: 6,
+    borderRadius: 10,
     alignSelf: "flex-start",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    elevation: 2,
   },
   timeText: {
     fontSize: 14,
@@ -271,16 +273,10 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   tempDisplayContainer: {
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 10,
     alignSelf: "flex-start",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 6,
-    elevation: 4,
   },
   heroTemp: {
     fontSize: 80,
@@ -304,17 +300,11 @@ const styles = StyleSheet.create({
   feelsLikeContainer: {
     flexDirection: "row",
     alignItems: "baseline",
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
     paddingHorizontal: 10,
     paddingVertical: 6,
-    borderRadius: 8,
+    borderRadius: 10,
     marginBottom: 12,
     alignSelf: "flex-start",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    elevation: 2,
   },
   feelsLikeText: {
     fontSize: 15,

@@ -61,18 +61,13 @@ const WeatherDetailCard = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    backgroundColor: "transparent",
     borderRadius: 16,
     padding: 16,
     alignItems: "center",
     minHeight: 110,
-    borderWidth: 2,
-    borderColor: "rgba(255, 255, 255, 0.5)",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 6,
+    borderWidth: 0,
+    borderColor: "transparent",
     overflow: "hidden",
   },
   iconContainer: {

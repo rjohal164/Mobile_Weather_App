@@ -11,6 +11,7 @@
 
 import React from "react";
 import { Text, StyleSheet, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 // ============================================================================
 // Component Definition
@@ -21,6 +22,10 @@ const WeatherDescription = ({
   style,
   capitalize = true,
   showBackdrop = true,
+  gradientColors = null,
+  fontSize = 17,
+  textAlign = "center",
+  alignSelf = "center",
 }) => {
   if (!description) {
     return null;
@@ -31,14 +36,31 @@ const WeatherDescription = ({
     : description;
 
   if (showBackdrop) {
-    return (
-      <View style={[styles.backdrop, style]}>
-        <Text style={styles.text}>{displayText}</Text>
+    const backdropStyle = [styles.backdrop, { alignSelf }, style];
+    const textStyle = [styles.text, { fontSize, textAlign }];
+    
+    const BackdropContent = (
+      <View style={backdropStyle}>
+        <Text style={textStyle}>{displayText}</Text>
       </View>
     );
+
+    if (gradientColors) {
+      return (
+        <LinearGradient
+          colors={gradientColors}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={backdropStyle}>
+          <Text style={textStyle}>{displayText}</Text>
+        </LinearGradient>
+      );
+    }
+
+    return BackdropContent;
   }
 
-  return <Text style={[styles.text, style]}>{displayText}</Text>;
+  return <Text style={[styles.text, { fontSize, textAlign }, style]}>{displayText}</Text>;
 };
 
 const styles = StyleSheet.create({
@@ -52,15 +74,9 @@ const styles = StyleSheet.create({
     textShadowRadius: 3,
   },
   backdrop: {
-    backgroundColor: "rgba(0, 0, 0, 0.45)",
     paddingHorizontal: 10,
     paddingVertical: 6,
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    elevation: 2,
+    borderRadius: 10,
   },
 });
 

@@ -10,6 +10,7 @@
 
 import React from "react";
 import { View, Text, ImageBackground, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { formatTime, getWeatherCategory } from "../../utils/weatherUtils";
 import { getBackgroundImage } from "../../config/backgroundConfig";
 import WeatherIcon from "../ui/WeatherIcon";
@@ -35,12 +36,18 @@ const HourlyForecastCard = ({ weatherData, tempScale, showTime = true }) => {
       imageStyle={styles.backgroundImage}
       resizeMode="cover">
       {showTime && (
-        <Text style={styles.time}>
-          {new Date(weatherData.dt * 1000).toLocaleTimeString("en-US", {
-            hour: "numeric",
-            hour12: true,
-          })}
-        </Text>
+        <LinearGradient
+          colors={["rgba(135, 135, 135, 0.6)", "rgba(135, 135, 135, 0.6)", "rgba(135, 135, 135, 0.6)"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.time}>
+          <Text style={styles.timeText}>
+            {new Date(weatherData.dt * 1000).toLocaleTimeString("en-US", {
+              hour: "numeric",
+              hour12: true,
+            })}
+          </Text>
+        </LinearGradient>
       )}
       <WeatherIcon
         iconCode={weatherInfo?.icon}
@@ -48,12 +55,18 @@ const HourlyForecastCard = ({ weatherData, tempScale, showTime = true }) => {
         size="2x"
         style={styles.icon}
       />
-      <TemperatureDisplay
-        temp={weatherData.main.temp}
-        tempScale={tempScale}
-        size="lg"
-        style={styles.temp}
-      />
+      <LinearGradient
+        colors={["rgba(135, 135, 135, 0.6)", "rgba(135, 135, 135, 0.6)", "rgba(135, 135, 135, 0.6)"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.tempContainer}>
+        <TemperatureDisplay
+          temp={weatherData.main.temp}
+          tempScale={tempScale}
+          size="lg"
+          style={styles.temp}
+        />
+      </LinearGradient>
     </ImageBackground>
   );
 };
@@ -64,28 +77,37 @@ const styles = StyleSheet.create({
     padding: 12,
     alignItems: "center",
     minWidth: 100,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.2)",
+    borderWidth: 0,
+    borderColor: "transparent",
     overflow: "hidden",
   },
   backgroundImage: {
-    borderRadius: 11,
+    borderRadius: 12,
   },
   time: {
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 10,
+    marginBottom: 8,
+    alignSelf: "flex-start",
+  },
+  timeText: {
     fontSize: 12,
     fontWeight: "600",
     color: "#fff",
-    marginBottom: 8,
-    backgroundColor: "rgba(0, 0, 0, 0.2)",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
   },
   icon: {
     marginVertical: 8,
   },
-  temp: {
+  tempContainer: {
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    borderRadius: 10,
     marginTop: 4,
+    alignSelf: "center",
+  },
+  temp: {
+    // TemperatureDisplay styles remain unchanged
   },
 });
 

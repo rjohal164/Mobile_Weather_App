@@ -25,6 +25,7 @@ const TemperatureDisplay = ({
   style,
   containerStyle,
   inline = false,
+  fontWeight = "300",
 }) => {
   const convertedTemp = convertTemp(temp, tempScale);
   const symbol = getTempSymbol(tempScale);
@@ -59,11 +60,11 @@ const TemperatureDisplay = ({
         inline ? styles.inlineContainer : styles.container,
         style,
       ]}>
-      <Text style={[sizeStyles[size], styles.tempText]}>
+      <Text style={[sizeStyles[size], styles.tempText, { fontWeight }]}>
         {convertedTemp}
       </Text>
       {showSymbol && (
-        <Text style={[symbolSizeStyles[size], styles.symbolText]}>
+        <Text style={[symbolSizeStyles[size], styles.symbolText, { fontWeight }]}>
           {symbol}
         </Text>
       )}
